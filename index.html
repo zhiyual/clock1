@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>炫彩时钟</title>
+		<style type="text/css">
+			*{margin: 0;padding: 0;font-family: "微软雅黑";font-style: normal;color: #3c3c3c;}
+			html{
+				height: 100%;
+			}
+			body{
+				height: 100%;
+				background: #000;
+			}
+			#canvas{
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" >浏览器不支持HTML5画布</canvas>
+		<script type="text/javascript">
+			digit =
+			    [
+			        [
+			            [0,0,1,1,1,0,0],
+			            [0,1,1,0,1,1,0],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [0,1,1,0,1,1,0],
+			            [0,0,1,1,1,0,0]
+			        ],//0
+			        [
+			            [0,0,0,1,1,0,0],
+			            [0,1,1,1,1,0,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,0,1,1,0,0],
+			            [1,1,1,1,1,1,1]
+			        ],//1
+			        [
+			            [0,1,1,1,1,1,0],
+			            [1,1,0,0,0,1,1],
+			            [0,0,0,0,0,1,1],
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,1,1,0,0,0],
+			            [0,1,1,0,0,0,0],
+			            [1,1,0,0,0,0,0],
+			            [1,1,0,0,0,1,1],
+			            [1,1,1,1,1,1,1]
+			        ],//2
+			        [
+			            [1,1,1,1,1,1,1],
+			            [0,0,0,0,0,1,1],
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,1,1,1,0,0],
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,0,0,1,1],
+			            [0,0,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [0,1,1,1,1,1,0]
+			        ],//3
+			        [
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,1,1,1,0],
+			            [0,0,1,1,1,1,0],
+			            [0,1,1,0,1,1,0],
+			            [1,1,0,0,1,1,0],
+			            [1,1,1,1,1,1,1],
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,1,1,1,1]
+			        ],//4
+			        [
+			            [1,1,1,1,1,1,1],
+			            [1,1,0,0,0,0,0],
+			            [1,1,0,0,0,0,0],
+			            [1,1,1,1,1,1,0],
+			            [0,0,0,0,0,1,1],
+			            [0,0,0,0,0,1,1],
+			            [0,0,0,0,0,1,1],
+			            [0,0,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [0,1,1,1,1,1,0]
+			        ],//5
+			        [
+			            [0,0,0,0,1,1,0],
+			            [0,0,1,1,0,0,0],
+			            [0,1,1,0,0,0,0],
+			            [1,1,0,0,0,0,0],
+			            [1,1,0,1,1,1,0],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [0,1,1,1,1,1,0]
+			        ],//6
+			        [
+			            [1,1,1,1,1,1,1],
+			            [1,1,0,0,0,1,1],
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,0,1,1,0,0],
+			            [0,0,1,1,0,0,0],
+			            [0,0,1,1,0,0,0],
+			            [0,0,1,1,0,0,0],
+			            [0,0,1,1,0,0,0]
+			        ],//7
+			        [
+			            [0,1,1,1,1,1,0],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [0,1,1,1,1,1,0],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [0,1,1,1,1,1,0]
+			        ],//8
+			        [
+			            [0,1,1,1,1,1,0],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [1,1,0,0,0,1,1],
+			            [0,1,1,1,0,1,1],
+			            [0,0,0,0,0,1,1],
+			            [0,0,0,0,0,1,1],
+			            [0,0,0,0,1,1,0],
+			            [0,0,0,1,1,0,0],
+			            [0,1,1,0,0,0,0]
+			        ],//9
+			        [
+			            [0,0,0,0],
+			            [0,0,0,0],
+			            [0,1,1,0],
+			            [0,1,1,0],
+			            [0,0,0,0],
+			            [0,0,0,0],
+			            [0,1,1,0],
+			            [0,1,1,0],
+			            [0,0,0,0],
+			            [0,0,0,0]
+			        ]//:
+			    ];
+			var can_width=1024;
+			var can_height=768;
+			var radius=8;
+			var m_top=60;
+			var m_left=30;
+			var canv,ctx;
+			var d=new Date(),d2=new Date();
+			var hour,hour2,min,min2,sec,sec2,this_sec,next_sec;
+			var balls=[];
+			const colors=['#0000ff','#48ff00','#ff0000','#fff100','#9900ea','#00b7ee','#ff6600']
+			window.onload = function () {
+				can_width=document.body.clientWidth;
+				can_height=document.body.clientHeight;
+				m_left=Math.round(can_width/10);
+				radius=Math.round(can_width*4/5/108)-1;
+				m_top=Math.round(can_height/6);
+				canv=document.getElementById("canvas");
+				canv.width=can_width;
+				canv.height=can_height;
+				ctx=canv.getContext('2d');
+				var dd=new Date();
+				this_sec=dd.getTime();
+				setInterval(function () {
+					render();
+					update();
+				},50);
+			}
+			function update () {
+				var d1=new Date();
+				d1.setTime(this_sec);
+				var h=d1.getHours();
+				var m=d1.getMinutes();
+				var s=d1.getSeconds();
+				next_sec=d.getTime();
+				d2.setTime(next_sec);
+				hour2=d2.getHours();
+				min2=d2.getMinutes();
+				sec2=d2.getSeconds();
+				while (next_sec!=this_sec){
+					if (parseInt(hour2/10)!=parseInt(h/10)) {
+						addBall(m_left,m_top,parseInt(h/10));
+					}
+					if (parseInt(hour2%10)!=parseInt(h%10)) {
+						addBall(m_left+15*(radius+1),m_top,parseInt(h%10));
+					}
+					if (parseInt(min2/10)!=parseInt(m/10)) {
+						addBall(m_left+39*(radius+1),m_top,parseInt(m/10));
+					}
+					if (parseInt(min2%10)!=parseInt(m%10)) {
+						addBall(m_left+54*(radius+1),m_top,parseInt(m%10));
+					}
+					if (parseInt(sec2/10)!=parseInt(s/10)) {
+						addBall(m_left+78*(radius+1),m_top,parseInt(s/10));
+					}
+					if (parseInt(sec2%10)!=parseInt(s%10)) {
+						addBall(m_left+93*(radius+1),m_top,parseInt(s%10));
+					}
+					this_sec=next_sec;
+				}
+				updateBall();
+			}
+			function updateBall () {
+				for (var i=0;i<balls.length;i++) {
+					balls[i].x+=balls[i].vx;
+					balls[i].y+=balls[i].vy;
+					balls[i].vy+=balls[i].g;
+					if (balls[i].y>=can_height-radius) {
+						balls[i].y=can_height-radius;
+						balls[i].vy=-balls[i].vy*0.75;
+					}
+				}
+				var count=0;
+				for (var i=0;i<balls.length;i++) {
+					if (balls[i].x+radius>0 && balls[i].x-radius<can_width) {
+						balls[count++]=balls[i];
+					}
+				}
+				while (balls.length>count){
+					balls.pop();
+				}
+			}
+			function addBall (x,y,n) {
+				for (var i=0;i<digit[n].length;i++) {
+					for (var j=0;j<digit[n][i].length;j++) {
+						if (digit[n][i][j] == 1) {
+							var aBall={
+								x:x+(j*2*(radius+1)+(radius+1)),
+								y:y+(i*2*(radius+1)+(radius+1)),
+								g:1.5+Math.random(),
+								vx:Math.pow(-1,Math.ceil(Math.random()*100))*4,
+								vy:-5,
+								colors:colors[Math.floor(Math.random()*colors.length)]
+							}
+							balls.push(aBall);
+						}
+					}
+				}
+			}
+			function render () {	
+				d=new Date();
+				hour=d.getHours();
+				min=d.getMinutes();
+				sec=d.getSeconds();
+				ctx.clearRect(0,0,can_width,can_height);
+				renderdigit(m_left,m_top,parseInt(hour/10));
+				renderdigit(m_left+15*(radius+1),m_top,parseInt(hour%10));
+				renderdigit(m_left+30*(radius+1),m_top,10);
+				renderdigit(m_left+39*(radius+1),m_top,parseInt(min/10));
+				renderdigit(m_left+54*(radius+1),m_top,parseInt(min%10));
+				renderdigit(m_left+69*(radius+1),m_top,10);
+				renderdigit(m_left+78*(radius+1),m_top,parseInt(sec/10));
+				renderdigit(m_left+93*(radius+1),m_top,parseInt(sec%10));
+				for (var i=0;i<balls.length;i++) {
+					ctx.fillStyle=balls[i].colors
+					ctx.beginPath();
+					ctx.arc(balls[i].x,balls[i].y,radius,0,2*Math.PI);
+					ctx.closePath();
+					ctx.fill();
+				}
+			}
+			function renderdigit (x,y,n) {
+				ctx.fillStyle="aqua";
+				for (var i=0;i<digit[n].length;i++) {
+					for (var j=0;j<digit[n][i].length;j++) {
+						if (digit[n][i][j] == 1) {
+							ctx.beginPath();
+							ctx.arc(x+(j*2*(radius+1)+(radius+1)),y+(i*2*(radius+1)+(radius+1)),radius,0,2*Math.PI);
+							ctx.closePath();
+							ctx.fill()
+						}
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
